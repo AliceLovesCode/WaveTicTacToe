@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +14,13 @@ namespace WaveTicTacToe.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            //check for valid input (the only valid input is a 9-character long string containing spaces, 'x' and 'o' characters.
+            //check for valid input (the only valid input is a 9-character long string in the `board` parameter containing spaces, 'x' and 'o' characters.
             //invalid input is a bad request
+            var board = Request.Query["board"];
+            if (!InputIsValid(board))
+            {
+                return BadRequest("Invalid board parameter");
+            }
 
             //check that it is plausibly o's turn; this is the case if there are equal or fewer o's than x's on the board
             //not plausibly o's turn is a bad request
@@ -31,7 +37,12 @@ namespace WaveTicTacToe.Controllers
 
         private bool InputIsValid(string input)
         {
-            return false;
+            if (input == null)
+            {
+                return false;
+            }
+            var regex = new Regex("^[ xo]{9}$");
+            return regex.Match(input).Success;
         }
     }
 }
