@@ -42,6 +42,37 @@ namespace WaveTicTacToe.Models
             }
         }
 
+        //this is not meant to be optimal, as I doubt I will have time to complete optimal play
+        private void UpdateBoardGridWithBetterMove()
+        {
+            //first check if I can win; are there any rows, columns, or diagonals with two o's already?
+            if (false)
+            {
+
+            }
+            //second check if they are about to win; are there any rows, columns, or diagonals with two x's already?
+            else if (false)
+            {
+
+            }
+            //if the center is empty, play the center
+            else if (false)
+            {
+
+            }
+            //if the center isn't empty, play a corner in a column I already have an o in
+            else if (false)
+            {
+
+            }
+            //if I can't find anything else, play the naive move
+            else
+            {
+                UpdateBoardGridWithNaiveMove();
+            }
+        }
+
+
         private char[,] BoardGridFromString(string boardString)
         {
             if (!StringIsValidBoard(boardString))
@@ -110,6 +141,53 @@ namespace WaveTicTacToe.Models
             }
             var checkValidChars = new Regex("^[ xo]{9}$");
             return checkValidChars.Match(checkBoard).Success;
+        }
+
+        //projection onto one dimensional arrays
+        private static char[] RowProjection(char[,] grid, int rowNumber)
+        {
+            char[] row = new char[3];
+            for (int i = 0; i < 3; i++)
+            {
+                row[i] = grid[rowNumber, i];
+            }
+
+            return row;
+        }
+
+
+        private static char[] ColumnProjection(char[,] grid, int colNumber)
+        {
+            char[] col = new char[3];
+            for (int i = 0; i < 3; i++)
+            {
+                col[i] = grid[i, colNumber];
+            }
+            return col;
+        }
+
+        //diagonal 0 is the one starting at [0,0] and diagonal 1 is the one starting at [2, 0]
+        private static char[] DiagonalProjection(char[,] grid, int diagonalNumber)
+        {
+            char[] diagonal = new char[3];
+            if (diagonalNumber == 0)
+            {
+                diagonal[0] = grid[0, 0];
+                diagonal[1] = grid[1, 1];
+                diagonal[2] = grid[2, 2];
+            }
+            else
+            {
+                diagonal[0] = grid[2, 0];
+                diagonal[1] = grid[1, 1];
+                diagonal[2] = grid[0, 2];
+            }
+            return diagonal;
+        }
+
+        private static int ProjectionCharacterCount(char[] projection, char checkChar)
+        {
+            return projection.Count(f => f == checkChar);
         }
     }
 }
