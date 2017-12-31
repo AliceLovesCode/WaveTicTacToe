@@ -10,13 +10,36 @@ namespace WaveTicTacToe.Models
 {
     public class Board
     {
-        char[,] inputBoardGrid = new char[3, 3];
-
-        public string ResultBoard => StringFromBoardGrid(inputBoardGrid); 
+        char[,] boardGrid = new char[3, 3];
 
         public Board(string board)
         {
-            inputBoardGrid = BoardGridFromString(board);
+            boardGrid = BoardGridFromString(board);
+        }
+
+        public string ResultBoard() {
+            UpdateBoardGridWithMove();
+            return StringFromBoardGrid(boardGrid);
+        }
+
+        private void UpdateBoardGridWithMove()
+        {
+            UpdateBoardGridWithNaiveMove();
+        }
+
+        private void UpdateBoardGridWithNaiveMove()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (boardGrid[i, j] == ' ')
+                    {
+                        boardGrid[i, j] = 'o';
+                        return;
+                    }
+                }
+            }
         }
 
         private char[,] BoardGridFromString(string boardString)

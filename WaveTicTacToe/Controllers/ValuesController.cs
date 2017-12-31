@@ -42,7 +42,7 @@ namespace WaveTicTacToe.Controllers
             //both of these happen in the board object and errors are thrown as exceptions
             try
             {
-                return Ok(board.ResultBoard);
+                return Ok(board.ResultBoard());
             }
             catch (Exception ex)
             {
