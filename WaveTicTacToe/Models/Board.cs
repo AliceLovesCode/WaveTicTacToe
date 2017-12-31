@@ -10,19 +10,25 @@ namespace WaveTicTacToe.Models
 {
     public class Board
     {
-        char[,] startingBoardGrid = new char[3, 3];
-        public char[,] StartingBoardGrid { get; set; }
+        char[,] inputBoardGrid = new char[3, 3];
 
-        public string ResultBoard => StringFromBoardGrid(startingBoardGrid); 
+        public string ResultBoard => StringFromBoardGrid(inputBoardGrid); 
 
         public Board(string board)
         {
-            startingBoardGrid = BoardGridFromString(board);
+            inputBoardGrid = BoardGridFromString(board);
         }
 
         private char[,] BoardGridFromString(string boardString)
         {
-            if (StringIsValidBoard(boardString))
+            if (!StringIsValidBoard(boardString))
+            {
+                throw new InvalidBoardException("Invalid board parameter");
+            }
+            if (!IsPlausibleInputBoard(boardString)) {
+                throw new ImplausibleBoardException("Implausible board parameter");
+            }
+            else
             {
                 var grid = new char[3, 3];
                 int h = 0;
@@ -36,11 +42,6 @@ namespace WaveTicTacToe.Models
                 }
                 return grid;
             }
-            else
-            {
-                throw new InvalidBoardException("Invalid board parameter");
-            }
-
         }
 
         private string StringFromBoardGrid(char[,] grid)
@@ -53,16 +54,31 @@ namespace WaveTicTacToe.Models
                     boardStringBuilder.Append(grid[i, j]);
                 }
             }
-
-            return boardStringBuilder.ToString();
+            var boardString = boardStringBuilder.ToString();
+            if (!IsPlausibleResultBoard(boardString))
+            {
+                throw new ImplausibleBoardException("Implausible result board");
+            }
+            return boardString;
         }
 
-        public bool IsPlausible()
+        private static bool IsPlausibleInputBoard(string board)
         {
-            return false;
+            var xCount = board.Count(f => f == 'x');
+            var oCount = board.Count(f => f == 'o');
+
+            return oCount <= xCount && (xCount - oCount <= 1);
         }
 
-        public static bool StringIsValidBoard(string checkBoard)
+        private static bool IsPlausibleResultBoard(string board)
+        {
+            var xCount = board.Count(f => f == 'x');
+            var oCount = board.Count(f => f == 'o');
+
+            return xCount <= oCount && (oCount - xCount <= 1);
+        }
+
+        private static bool StringIsValidBoard(string checkBoard)
         {
             if (checkBoard == null)
             {
