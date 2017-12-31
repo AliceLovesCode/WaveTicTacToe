@@ -6,39 +6,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WaveTicTacToe.Controllers
 {
-    [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [Route("[controller]")]
+    public class PlayController : Controller
     {
-        // GET api/values
+        // GET /play
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            //check for valid input (the only valid input is a 9-character long string containing spaces, 'x' and 'o' characters.
+            //invalid input is a bad request
+
+            //check that it is plausibly o's turn; this is the case if there are equal or fewer o's than x's on the board
+            //not plausibly o's turn is a bad request
+
+            //find a move and return the board position with that move made
+
+            //check  that the board we constructed is valid
+            //server error if not (we messed up somehow)
+
+            //check that it is now plausibly x's turn; this is the case if there are equal or fewer x's than o's on the board
+            //server error if not (we messed up somehow)
+            return Ok("         ");
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        private bool InputIsValid(string input)
         {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return false;
         }
     }
 }
