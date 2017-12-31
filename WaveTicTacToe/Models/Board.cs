@@ -89,8 +89,9 @@ namespace WaveTicTacToe.Models
         {
             var xCount = board.Count(f => f == 'x');
             var oCount = board.Count(f => f == 'o');
+            var spaceCount = board.Count(f => f == ' ');
 
-            return oCount <= xCount && (xCount - oCount <= 1);
+            return oCount <= xCount && (xCount - oCount <= 1) && spaceCount > 0;
         }
 
         private static bool IsPlausibleResultBoard(string board)
@@ -107,8 +108,8 @@ namespace WaveTicTacToe.Models
             {
                 return false;
             }
-            var regex = new Regex("^[ xo]{9}$");
-            return regex.Match(checkBoard).Success;
+            var checkValidChars = new Regex("^[ xo]{9}$");
+            return checkValidChars.Match(checkBoard).Success;
         }
     }
 }
