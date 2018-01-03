@@ -72,6 +72,52 @@ namespace WaveTicTacToe.Models
             }
         }
 
+        private static bool HasWinConditionBeenMet(char[,] board)
+        {
+            bool winConditionMet = false;
+
+            for (int i = 0; i < 3; i++)
+            {
+                winConditionMet = AllOneChar(RowProjection(board, i), 'o') || AllOneChar(RowProjection(board, i), 'x');
+                if (winConditionMet)
+                {
+                    return winConditionMet;
+                }
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                winConditionMet = AllOneChar(ColumnProjection(board, i), 'o') || AllOneChar(ColumnProjection(board, i), 'x');
+                if (winConditionMet)
+                {
+                    return winConditionMet;
+                }
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                winConditionMet = AllOneChar(DiagonalProjection(board, i), 'o') || AllOneChar(DiagonalProjection(board, i), 'x');
+                if (winConditionMet)
+                {
+                    return winConditionMet;
+                }
+            }
+
+            return winConditionMet;
+        }
+        private static bool AllOneChar(char[] input, char checkChar)
+        {
+            bool allOne = true;
+            for (int j = 0; j < 3; j++)
+            {
+                if (input[j] != checkChar)
+                {
+                    allOne = false;
+                }
+            }
+
+            return allOne;
+        }
 
         private char[,] BoardGridFromString(string boardString)
         {
@@ -93,6 +139,10 @@ namespace WaveTicTacToe.Models
                         grid[i, j] = boardString[h];
                         h++;
                     }
+                }
+                if (HasWinConditionBeenMet(grid))
+                {
+                    throw new ImplausibleBoardException("Game already won");
                 }
                 return grid;
             }
